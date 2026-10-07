@@ -1,8 +1,11 @@
 export type EmotionLabel = '暴躁老哥' | '温柔姐姐' | '阴阳怪气' | '元气满满';
 export type StudioStage = 'record' | 'crop' | 'emotion' | 'cover' | 'collection';
+/** 标签来源：auto=声学分析自动建议；manual=用户明确选择（无有效声音时也只能是它）。 */
+export type EmotionSource = 'auto' | 'manual';
 export interface CropRange { start: number; end: number }
 export interface AudioFeatures { loudness: number; dynamics: number; pitch: number; zeroCrossing: number; pauseRatio: number; tempoVariation: number }
 export interface EmotionResult { label: EmotionLabel; confidence: number; explanation: string; scores: Record<EmotionLabel, number> }
+export interface VoiceSummary { voicedDuration: number; pauseCount: number; pauseDuration: number; clipping: boolean }
 export interface CoverConfig {
   label: EmotionLabel;
   title: string;
@@ -17,7 +20,11 @@ export interface VoiceMeme {
   id: string;
   title: string;
   emotion: EmotionLabel;
+  /** 0 表示人工选择（无自动百分比）；>0 为自动建议置信度。 */
   confidence: number;
+  /** 旧作品没有该字段时按人工选择对待。 */
+  emotionSource?: EmotionSource;
+  voiceSummary?: VoiceSummary;
   features: AudioFeatures;
   audio: Blob;
   duration: number;

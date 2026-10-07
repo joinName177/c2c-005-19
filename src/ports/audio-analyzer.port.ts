@@ -1,3 +1,8 @@
 import type { AudioFeatures } from '../core/models';
-export interface AudioAnalysis { features: AudioFeatures; duration: number }
+import type { VoiceAssessment } from '../core/voice-detector';
+export interface AudioAnalysis {
+  features: AudioFeatures;
+  duration: number;
+  assessment: VoiceAssessment;
+}
 export interface AudioAnalyzerPort { analyze(blob: Blob): Promise<AudioAnalysis> }
